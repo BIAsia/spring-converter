@@ -1,0 +1,10 @@
+{
+  "api": "1.0.0",
+  "editorType": [
+    "figma"
+  ],
+  "id": "spring-converter",
+  "name": "Spring Converter",
+  "main": "build/main.js",
+  "ui": "build/ui.js"
+}
