@@ -3,8 +3,10 @@
   "editorType": [
     "figma"
   ],
-  "id": "spring-converter",
+  "id": "1474332301800649688",
   "name": "Spring Converter",
+  "networkAccess": { "allowedDomains": ["none"] },
+  "documentAccess": "dynamic-page",
   "main": "build/main.js",
   "ui": "build/ui.js"
 }

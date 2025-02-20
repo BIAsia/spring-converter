@@ -171,7 +171,7 @@ function Plugin() {
             style={{ 
               width: '32px', 
               height: '32px', 
-              backgroundColor: 'var(--figma-color-bg-brand)',
+              backgroundColor: 'var(--figma-color-bg-inverse)',
               borderRadius: '6px',
               margin: '16px'
             }}
@@ -200,7 +200,7 @@ function Plugin() {
         />
         <VerticalSpace space="medium" />
         <Columns space="small">
-          <Button fullWidth onClick={handleConvertButtonClick}>
+          <Button style={{backgroundColor: 'var(--figma-color-bg-inverse)', color: 'var(--figma-color-text-oninverse)'}}fullWidth onClick={handleConvertButtonClick}>
             Convert
           </Button>
           <Button fullWidth onClick={handleSetDefaultClick} secondary>
