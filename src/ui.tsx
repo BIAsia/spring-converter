@@ -14,7 +14,8 @@ import {
   IconButton,
   IconCode16,
   Link,
-  Banner
+  Banner,
+  Toggle
 } from '@create-figma-plugin/ui'
 import { emit } from '@create-figma-plugin/utilities'
 import { h } from 'preact'
@@ -52,10 +53,10 @@ const platformDisplayNames = {
 
 const TabOptions: Array<TabsOption> = [{
   children: <div></div>,
-  value: 'preview'
+  value: 'Preview'
 }, {
   children: <div></div>,
-  value: 'code'
+  value: 'Code'
 },];
 
 // const TABS = [
@@ -71,13 +72,14 @@ function Plugin() {
   const [stiffness, setStiffness] = useState<number | null>(defaultSpring.stiffness)
   const [damping, setDamping] = useState<number | null>(defaultSpring.damping)
   const [animationKey, setAnimationKey] = useState(0)
-  const [selectedTab, setSelectedTab] = useState<string>('preview')
+  const [selectedTab, setSelectedTab] = useState<string>('Preview')
   const [copiedStates, setCopiedStates] = useState({
     ios: false,
     android: false,
     web: false,
     tux: false
   })
+  const [fallbackPreview, setFallbackPreview] = useState<boolean>(false)
 
 
 
@@ -151,6 +153,11 @@ function Plugin() {
     }, 2000)
   }, [generateCode])
 
+  const handleFallbackPreviewChange = useCallback((event: h.JSX.TargetedEvent<HTMLInputElement>) => {
+    setFallbackPreview(event.currentTarget.checked)
+    setAnimationKey(prevKey => prevKey + 1) // 触发动画重新播放
+  }, [])
+
   return (
     <div>
       <Tabs
@@ -159,15 +166,29 @@ function Plugin() {
         onValueChange={handleTabChange}
       />
 
-      {selectedTab === 'preview' ? (
+      {selectedTab === 'Preview' ? (
         <Container space="medium" style={{ width: '100%', height: '100%' }}>
         <VerticalSpace space="medium" />
         <Container space="small" style={{ height: '80px', backgroundColor: 'var(--figma-color-bg-secondary)', borderRadius: '6px' }}>
         <VerticalSpace space="extraSmall" />
+        {fallbackPreview && (
+            <Text style={{position: 'absolute'}}><Muted>downgraded</Muted></Text>
+        )}
           <motion.div
             key={animationKey} // 使用状态变量作为 key 来触发重新渲染
-            animate={{ x: 100 }}
-            transition={{ type: 'spring', stiffness: stiffness ?? 100, damping: damping ?? 10 }}
+            animate={{ x: 130 }}
+            transition={
+              fallbackPreview 
+                ? { 
+                    duration: (duration ?? DEFAULT_DURATION) / 1000, 
+                    ease: [0.33, 0.86, 0.2, 1] 
+                  }
+                : { 
+                    type: 'spring', 
+                    stiffness: stiffness ?? 100, 
+                    damping: damping ?? 10 
+                  }
+            }
             style={{ 
               width: '32px', 
               height: '32px', 
@@ -176,7 +197,9 @@ function Plugin() {
               margin: '16px'
             }}
           />
+        
         </Container>
+        
         <VerticalSpace space="medium" />
         <Text>Duration (ms)</Text>
         <VerticalSpace space="extraSmall" />
@@ -207,6 +230,12 @@ function Plugin() {
             Use Default
           </Button>
         </Columns>
+        <VerticalSpace space="medium" />
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          <Toggle onChange={handleFallbackPreviewChange} value={fallbackPreview}>
+            <Text>Curve Downgrade Preview</Text>
+          </Toggle>
+        </div>
         <VerticalSpace space="medium" />
         <Text><Muted>Spring Parameters</Muted></Text>
           <VerticalSpace space="small" />
