@@ -38,7 +38,7 @@ function getSpringParams(duration: number, bounce: number): SpringParams {
 }
 
 // Add these constants at the top of the file after imports
-const DEFAULT_DURATION = 300
+const DEFAULT_DURATION = 350
 const DEFAULT_BOUNCE = 0.1
 
 // type TabValue = 'preview' | 'code'
@@ -172,7 +172,7 @@ function Plugin() {
         <Container space="small" style={{ height: '80px', backgroundColor: 'var(--figma-color-bg-secondary)', borderRadius: '6px' }}>
         <VerticalSpace space="extraSmall" />
         {fallbackPreview && (
-            <Text style={{position: 'absolute'}}><Muted>downgraded</Muted></Text>
+            <Text style={{position: 'absolute'}}><Muted>Degraded</Muted></Text>
         )}
           <motion.div
             key={animationKey} // 使用状态变量作为 key 来触发重新渲染
@@ -233,7 +233,7 @@ function Plugin() {
         <VerticalSpace space="medium" />
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
           <Toggle onChange={handleFallbackPreviewChange} value={fallbackPreview}>
-            <Text>Curve Downgrade Preview</Text>
+            <Text>Curve Degrade Preview</Text>
           </Toggle>
         </div>
         <VerticalSpace space="medium" />
